@@ -1,0 +1,97 @@
+//Improve the system design in exercise 8 to incorporate the following features:
+(a) The price of the books should be updated as and when required. Use a private meneber function to
+implement this.
+(b) The stock value of each book should be automatically updated as soon as a transaction is completed.
+(c) The number of successful transactions should be recorded for the purpose of statistical analysis. Use
+static data members to keep count of transaction.
+
+#include <iostream>
+#include <string>
+
+class Book {
+private:
+    std::string author;
+    std::string title;
+    double price;
+    std::string publisher;
+    int stockPosition;
+    static int transactionCount; // Static data member to keep count of transactions
+
+    // Private member function to update price
+    void updatePrice(double newPrice) {
+        price = newPrice;
+    }
+
+public:
+    // Constructor
+    Book(const std::string& auth, const std::string& titl, double prc, const std::string& pub, int stockPos)
+        : author(auth), title(titl), price(prc), publisher(pub), stockPosition(stockPos) {}
+
+    // Destructor
+    ~Book() {
+        std::cout << "Book '" << title << "' by " << author << " has been removed from inventory." << std::endl;
+    }
+
+    // Function to check availability and process order
+    bool processOrder(const std::string& searchTitle, const std::string& searchAuthor, int numCopies) {
+        if (title == searchTitle && author == searchAuthor) {
+            if (stockPosition >= numCopies) {
+                double totalCost = price * numCopies;
+                std::cout << "Book Details:" << std::endl;
+                display();
+                std::cout << "Number of copies requested: " << numCopies << std::endl;
+                std::cout << "Total Cost: $" << totalCost << std::endl;
+                stockPosition -= numCopies;
+                transactionCount++; // Increment transaction count
+                return true;
+            } else {
+                std::cout << "Required copies not in stock." << std::endl;
+                return false;
+            }
+        } else {
+            std::cout << "Book not found in inventory." << std::endl;
+            return false;
+        }
+    }
+
+    // Function to display book details
+    void display() {
+        std::cout << "Title: " << title << std::endl;
+        std::cout << "Author: " << author << std::endl;
+        std::cout << "Price: $" << price << std::endl;
+        std::cout << "Publisher: " << publisher << std::endl;
+        std::cout << "Stock Position: " << stockPosition << std::endl;
+    }
+
+    // Static member function to get transaction count
+    static int getTransactionCount() {
+        return transactionCount;
+    }
+};
+
+// Initializing static member outside class definition
+int Book::transactionCount = 0;
+
+int main() {
+    // Creating book objects
+    Book* book1 = new Book("Author1", "Book1", 20.0, "Publisher1", 10);
+    Book* book2 = new Book("Author2", "Book2", 25.0, "Publisher2", 5);
+
+    // Processing orders
+    book1->processOrder("Book1", "Author1", 3);
+    book2->processOrder("Book2", "Author2", 8);
+
+    // Displaying book details
+    std::cout << "\nBook Details after orders:" << std::endl;
+    book1->display();
+    book2->display();
+
+    // Displaying transaction count
+    std::cout << "Total Transactions: " << Book::getTransactionCount() << std::endl;
+
+    // Freeing memory
+    delete book1;
+    delete book2;
+
+    return 0;
+}
