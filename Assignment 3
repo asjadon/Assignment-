@@ -1,0 +1,23 @@
+//Write a function using reference variables as arguments to swap the values of a pair of integers
+
+#include <iostream>
+
+// Function to swap two integers using reference variables
+void swap(int& a, int& b) {
+    int temp = a; // Store the value of 'a' in a temporary variable
+    a = b;        // Assign the value of 'b' to 'a'
+    b = temp;     // Assign the value of the temporary variable to 'b'
+}
+
+int main() {
+    int num1 = 5, num2 = 10;
+    
+    std::cout << "Before swapping: num1 = " << num1 << ", num2 = " << num2 << std::endl;
+
+    // Call the swap function to swap the values of num1 and num2
+    swap(num1, num2);
+
+    std::cout << "After swapping: num1 = " << num1 << ", num2 = " << num2 << std::endl;
+
+    return 0;
+}
