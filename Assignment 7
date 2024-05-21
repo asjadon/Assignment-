@@ -1,0 +1,54 @@
+//Design a constructor for bank account class
+
+#include <iostream>
+#include <string>
+
+class BankAccount {
+private:
+    std::string accountNumber;
+    std::string accountHolderName;
+    double balance;
+
+public:
+    // Constructor
+    BankAccount(const std::string& accNum, const std::string& accHolder, double initialBalance) {
+        accountNumber = accNum;
+        accountHolderName = accHolder;
+        balance = initialBalance;
+    }
+
+    // Other member functions...
+    void deposit(double amount) {
+        balance += amount;
+        std::cout << "Deposit of " << amount << " made. New balance is " << balance << std::endl;
+    }
+
+    void withdraw(double amount) {
+        if (balance >= amount) {
+            balance -= amount;
+            std::cout << "Withdrawal of " << amount << " processed. Remaining balance is " << balance << std::endl;
+        } else {
+            std::cout << "Insufficient funds. Withdrawal failed." << std::endl;
+        }
+    }
+
+    void display() {
+        std::cout << "Account Number: " << accountNumber << std::endl;
+        std::cout << "Account Holder Name: " << accountHolderName << std::endl;
+        std::cout << "Balance: " << balance << std::endl;
+    }
+};
+
+int main() {
+    // Creating a bank account object using the constructor
+    BankAccount acc("1234567890", "John Doe", 1000.0);
+
+    // Performing some operations
+    acc.display();
+    acc.deposit(500.0);
+    acc.withdraw(200.0);
+    acc.withdraw(2000.0); // This will fail due to insufficient funds
+    acc.display();
+
+    return 0;
+}
